@@ -2,5 +2,21 @@
     {
         "alpha": 0.0,
         "delta": 0.0
+    },
+    {
+        "alpha": 0.2,
+        "delta": 0.0
+    },
+    {
+        "alpha": -0.2,
+        "delta": 0.0
+    },
+    {
+        "alpha": 0.0,
+        "delta": 0.2
+    },
+    {
+        "alpha": 0.0,
+        "delta": -0.2
     }
 ]
