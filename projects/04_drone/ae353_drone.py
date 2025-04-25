@@ -502,7 +502,7 @@ class Simulator:
             # pos_meas_noise=0.01,
             # yaw_meas_noise=0.001,
             # marker_noise=0.01,
-            rpy_noise=0.01,
+            rpy_noise=0.0,
             linvel_noise=0.0,
             angvel_noise=0.0,
             pos_meas_noise=0.0,
