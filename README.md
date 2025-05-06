@@ -7,6 +7,8 @@ We do a lot of simulation in this class and make frequent use of the [PyBullet](
 ---
 # Project 4 Final Video
 
+### Top down POV
 https://github.com/user-attachments/assets/e90e28d8-6db4-4163-b8df-0fb6f0552273
 
+## Drone POV
 https://github.com/user-attachments/assets/6ed7fd8c-4776-46de-9846-2c8beb767cc4
