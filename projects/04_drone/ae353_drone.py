@@ -502,6 +502,12 @@ class Simulator:
             pos_meas_noise=0.01,
             yaw_meas_noise=0.001,
             marker_noise=0.01,
+            # rpy_noise=0.0,
+            # linvel_noise=0.0,
+            # angvel_noise=0.0,
+            # pos_meas_noise=0.0,
+            # yaw_meas_noise=0.0,
+            # marker_noise=0.0,
         ):
 
         # Set marker noise
@@ -799,7 +805,8 @@ class Simulator:
             self,
             max_time=None,
             videos=None,
-            print_debug=False
+            print_debug=False,
+            fast_mode=False  # <-- NEW FLAG
         ):
 
         start_time_for_diagnostics = time.time()
@@ -811,43 +818,33 @@ class Simulator:
         self.start_time = time.time() - self.t
         start_time_step = self.time_step
 
-        if videos is not None:
-            # Import imageio
+        if not fast_mode and videos is not None:
+            import importlib
             imageio = importlib.import_module('imageio')
-
-            # Compute frames per second
             fps = int(1 / self.dt)
-
-            # Open each video
             for video in videos:
                 if print_debug:
-                    print(f'Creating a video from view {video['view_name']} with name {video['file_name']} and fps {fps}')
-                
-                # Create video writer
+                    print(f"Creating a video from view {video['view_name']} with name {video['file_name']} and fps {fps}")
                 video['writer'] = imageio.get_writer(
                     video['file_name'],
                     format='FFMPEG',
                     mode='I',
                     fps=fps,
                 )
-
-                # Add first frame to video
                 rgba = self.snapshot(video['view_name'])
                 video['writer'].append_data(rgba)
 
         while True:
             all_done = self.step(print_debug=print_debug)
 
-            if self.display_meshcat:
+            if not fast_mode and self.display_meshcat:
                 self.meshcat_update()
                 self.update_drone_views()
 
-            if videos is not None:
+            if not fast_mode and videos is not None:
                 if (self.time_step % 25 == 0) and print_debug:
                     print(f' {self.time_step} / {self.max_time_steps}')
-                
                 for video in videos:
-                    # Add frame to video
                     rgba = self.snapshot(video['view_name'])
                     video['writer'].append_data(rgba)
 
@@ -857,17 +854,17 @@ class Simulator:
             if (self.max_time_steps is not None) and (self.time_step == self.max_time_steps):
                 break
 
-        if videos is not None:
+        if not fast_mode and videos is not None:
             for video in videos:
-                # Close video
                 video['writer'].close()
-        
+
         stop_time_for_diagnostics = time.time()
         stop_time_step = self.time_step
         elapsed_time = stop_time_for_diagnostics - start_time_for_diagnostics
         elapsed_time_steps = stop_time_step - start_time_step
         if (elapsed_time > 0) and print_debug:
             print(f'Simulated {elapsed_time_steps} time steps in {elapsed_time:.4f} seconds ({(elapsed_time_steps / elapsed_time):.4f} time steps per second)')
+
     
 
     def get_data(self, drone_name):
