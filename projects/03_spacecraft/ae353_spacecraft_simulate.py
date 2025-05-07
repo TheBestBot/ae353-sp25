@@ -476,7 +476,7 @@ class Simulator:
 
         # Stop if any star is out of view
         if np.isnan(star_meas).any():
-            print("STOPED DUE TO STAR OUT OF VIEW")
+            #print("STOPED DUE TO STAR OUT OF VIEW")
             return True
 
         # Get the state
@@ -484,7 +484,7 @@ class Simulator:
 
         # Stop if any wheel exceeds maximum velocity
         if (np.abs(v) > self.v_max).any():
-            print("STOPED DUE TO WHEEL EXCEDING MAX VELOCITY")
+            #wprint("STOPED DUE TO WHEEL EXCEDING MAX VELOCITY")
             return True
 
         # Get torque commands (run the controller)
